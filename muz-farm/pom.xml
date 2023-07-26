@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <groupId>com.muz.cn</groupId>
+        <artifactId>muz-cloud</artifactId>
+        <version>0.0.1</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.muz.cn</groupId>
+    <artifactId>muz-farm</artifactId>
+    <version>0.0.1</version>
+
+    <dependencies>
+        <!--SpringCloud ailibaba nacos -->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.cloud</groupId>-->
+<!--            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>-->
+<!--        </dependency>-->
+<!--        &lt;!&ndash;SpringCloud ailibaba sentinel-datasource-nacos 后续sentinel做持久化用到&ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>com.alibaba.csp</groupId>-->
+<!--            <artifactId>sentinel-datasource-nacos</artifactId>-->
+<!--        </dependency>-->
+        <!--SpringCloud ailibaba sentinel -->
+<!--                <dependency>-->
+<!--                    <groupId>com.alibaba.cloud</groupId>-->
+<!--                    <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>-->
+<!--                </dependency>-->
+        <!--openfeign-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+
+        <!-- spring cloud alibaba 组件配置结束 -->
+        <!-- 程序自定义组件配置 如下 -->
+        <dependency>
+            <groupId>com.muz.cn</groupId>
+            <artifactId>muz-framework</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <finalName>muz-farm-0.0.1</finalName>
+    </build>
+
+</project>
