@@ -1,6 +1,9 @@
-server:
-  port: 9011
-
+############################## Environment ##############################
+# dev   Development
+# test  test
+# pre   pre-环release
+# prod  production
 spring:
-  application:
-    name: muz-authentication-service
+  profiles:
+    active: dev
+    include: common

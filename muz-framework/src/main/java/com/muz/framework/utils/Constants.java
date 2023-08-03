@@ -1,4 +1,4 @@
-package com.muz.framework.util;
+package com.muz.framework.utils;
 
 
 public class Constants {

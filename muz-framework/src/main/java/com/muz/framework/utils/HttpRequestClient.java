@@ -1,9 +1,8 @@
-package com.muz.framework.util;
+package com.muz.framework.utils;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 @Component
 public class HttpRequestClient {
