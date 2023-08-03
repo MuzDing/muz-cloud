@@ -1,5 +1,6 @@
 package com.muz.cn.pojo.po;
 
+import com.muz.cn.pojo.bo.GoodsInfo;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +21,4 @@ public class SysFarmPlayerWarehouse {
     private Long id;
     private Long userId;
     private List<GoodsInfo> goodsList;
-
-
 }

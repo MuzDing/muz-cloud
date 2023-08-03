@@ -24,7 +24,7 @@ public class GlobalResult implements ResponseBodyAdvice<Object> {
      */
     @Override
     public boolean supports(MethodParameter returnType, Class<? extends HttpMessageConverter<?>> converterType) {
-        return ApiResult.class.isAssignableFrom(returnType.getParameterType());
+        return true;
     }
 
     /**
@@ -43,7 +43,13 @@ public class GlobalResult implements ResponseBodyAdvice<Object> {
             return body;
         }
         ApiResult<Object> apiResult = new ApiResult<>();
-        apiResult.setData(body);
+        if (returnType.getParameterType().equals(String.class))
+        {
+            apiResult.setData(body);
+            return apiResult;
+        }else {
+            apiResult.setData(body);
+        }
         return apiResult;
     }
 }

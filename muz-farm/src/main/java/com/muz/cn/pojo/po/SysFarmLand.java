@@ -3,6 +3,7 @@ package com.muz.cn.pojo.po;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,14 +20,14 @@ import java.time.LocalDateTime;
 public class SysFarmLand {
     @Id
     private Long id;
-    private Integer userId;
+    private Long userId;
     private Integer goodsId;
     private Integer landId;
     private LocalDateTime planting_time;
-    private LocalDateTime maturity_time;
-    private LocalDateTime maturity_times;
-    // 1 未种植 2 种植中 3 成熟
-    private Integer use_state;
+    private Double maturity_time;
+    private Integer maturity_times;
+    @Transient
+    private Long timeStamp;
 
 }
 

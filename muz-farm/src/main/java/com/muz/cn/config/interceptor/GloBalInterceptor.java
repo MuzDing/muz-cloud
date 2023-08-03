@@ -25,7 +25,7 @@ public class GloBalInterceptor implements HandlerInterceptor {
 //            loginUser.setUserId(Long.parseLong(authorization));
 //            return true;
 //        }
-        loginUser.setUserId(100000000l);
+        loginUser.setUserId(100000000L);
 
         return  true;
     }

@@ -1,4 +1,4 @@
-package com.muz.cn.pojo.po;
+package com.muz.cn.pojo.bo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

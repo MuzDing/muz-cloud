@@ -1,6 +1,6 @@
 package com.muz.cn.pojo.baseEnum;
 
-public enum FarmBehaviorEnum {
+public enum FarmOperateEnum {
     /**
      * 农场开头为 1 数字长度为8位.
      * 第二位为 增删改查 增为1,删为2,改为3,查为4
@@ -11,12 +11,12 @@ public enum FarmBehaviorEnum {
     FIND_ALL_LANDS(14000001, "查询所有土地"),
     BUY_GOODS(11000001, "购买商品"),
     PLANT_GOODS(13000001, "种植商品"),
-    HARVEST_GOODS(13000002, "出售商品"),
+    SELL_GOODS(13000002, "出售商品"),
     ;
     private Integer code;
     private String desc;
 
-    FarmBehaviorEnum(int code, String desc) {
+    FarmOperateEnum(int code, String desc) {
         this.code = code;
         this.desc = desc;
     }
@@ -27,9 +27,18 @@ public enum FarmBehaviorEnum {
         return desc;
     }
     public static String getDescByCode(Integer code) {
-        for (FarmBehaviorEnum ele : FarmBehaviorEnum.values()) {
+        for (FarmOperateEnum ele : FarmOperateEnum.values()) {
             if (ele.getCode().equals(code)) {
                 return ele.getDesc();
+            }
+        }
+        return null;
+    }
+
+    public static FarmOperateEnum getFarmOperateEnum(Integer code) {
+        for (FarmOperateEnum ele : FarmOperateEnum.values()) {
+            if (ele.getCode().equals(code)) {
+                return ele;
             }
         }
         return null;

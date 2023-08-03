@@ -25,9 +25,9 @@ public class SysFarmShop {
     private String image;
     private Integer goodsPrice;
     private Integer maturityPrice;
-    private Integer maturityPumber;
-    private Integer maturityPimes;
-    private Integer maturityPime;
+    private Integer maturityNumber;
+    private Integer maturityTimes;
+    private Double maturityTime;
     private Integer maturityExp;
     private Integer useState;
     private LocalDateTime createTime;
