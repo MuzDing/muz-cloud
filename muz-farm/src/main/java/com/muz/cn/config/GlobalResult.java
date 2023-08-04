@@ -43,13 +43,7 @@ public class GlobalResult implements ResponseBodyAdvice<Object> {
             return body;
         }
         ApiResult<Object> apiResult = new ApiResult<>();
-        if (returnType.getParameterType().equals(String.class))
-        {
-            apiResult.setData(body);
-            return apiResult;
-        }else {
-            apiResult.setData(body);
-        }
+        apiResult.setData(body);
         return apiResult;
     }
 }

@@ -3,7 +3,9 @@ package com.muz.cn;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication()
+@SpringBootApplication
+
+
 //@EnableDiscoveryClient
 //@EnableFeignClients
 public class FarmMain {
@@ -11,4 +13,6 @@ public class FarmMain {
         SpringApplication.run(FarmMain.class,args);
         System.out.println("service is ok");
     }
+
+
 }

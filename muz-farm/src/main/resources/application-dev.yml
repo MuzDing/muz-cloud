@@ -36,12 +36,6 @@ spring:
     poolPreparedStatements: true
     maxPoolPreparedStatementPerConnectionSize: 20
   data:
-    mongodb:
-      host: 60.204.144.127
-      port: 27017
-      database: muz_mongo
-      username: root
-      password: muzding147
     redis:
       host: 60.204.144.127
       port: 6379
@@ -54,4 +48,11 @@ spring:
           max-idle: 8
           min-idle: 0
       connect-timeout: 60000
+    mongodb:
+      host: 60.204.144.127
+      port: 27017
+      database: muz_mongo
+      username: root
+      password: muzding147
+
 

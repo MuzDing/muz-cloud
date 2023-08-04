@@ -64,6 +64,11 @@
             <artifactId>druid</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+
 
 
         <!-- spring cloud alibaba 组件配置结束 -->

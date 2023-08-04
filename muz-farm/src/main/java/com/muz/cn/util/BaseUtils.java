@@ -27,6 +27,9 @@ public class BaseUtils {
 
         return object;
     }
+    public static Long Double2Seconds(Double hours) {
+        return (long)(hours * 60) * 60; // 将小时数乘以 60 转换为分钟数
+    }
 
 //    public static <T> T convertToClass(Map<String, String> map, Class<T> clazz) throws IllegalAccessException, InstantiationException {
 //        T object = clazz.newInstance();
