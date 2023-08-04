@@ -14,7 +14,7 @@ public enum FarmOperateEnum {
     BUY_GOODS(11000001, "购买商品"),
     PLANT_GOODS(13000001, "种植作物"),
     SELL_GOODS(13000002, "出售商品"),
-    HARVEST_GOODS(13000002, "收获土地上中的作物"),
+    HARVEST_GOODS(13000003, "收获土地上中的作物"),
 
     ;
     private Integer code;
