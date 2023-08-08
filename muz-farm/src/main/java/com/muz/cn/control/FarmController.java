@@ -7,6 +7,7 @@ import com.muz.cn.pojo.dto.PlantGoodsDto;
 import com.muz.cn.pojo.dto.SellGoodsDto;
 import com.muz.cn.serivce.BaseService;
 import com.muz.cn.util.BaseUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,8 +21,8 @@ public class FarmController {
     private BaseService baseService;
 
     @PostMapping(value = "serivce")
-    public Object serivce(@RequestBody BaseDataDto dto) throws IllegalAccessException, InstantiationException {
-        FarmOperateEnum farmOperate = FarmOperateEnum.getFarmOperateEnum(dto.getOptCode());
+    public Object serivce(@RequestBody BaseDataDto dto, HttpServletRequest request) throws IllegalAccessException, InstantiationException {
+        FarmOperateEnum farmOperate = FarmOperateEnum.getFarmOperateByCode(dto.getOptCode());
 
         switch (farmOperate) {
             case BUY_GOODS:
@@ -30,7 +31,7 @@ public class FarmController {
                 break;
             case FIND_ALL_LANDS:
                 //查询所有土地
-                return baseService.findAllLands();
+                return baseService.findAllLands(request);
             case SELL_GOODS:
                 //出售商品
                 baseService.sellGoods(BaseUtils.convertToClass(dto.getData(), SellGoodsDto.class));

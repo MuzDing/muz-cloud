@@ -39,7 +39,7 @@ public enum FarmOperateEnum {
         return null;
     }
 
-    public static FarmOperateEnum getFarmOperateEnum(Integer code) {
+    public static FarmOperateEnum getFarmOperateByCode(Integer code) {
         for (FarmOperateEnum ele : FarmOperateEnum.values()) {
             if (ele.getCode().equals(code)) {
                 return ele;

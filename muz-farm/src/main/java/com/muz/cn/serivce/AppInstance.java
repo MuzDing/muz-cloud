@@ -1,4 +1,4 @@
-package com.muz.cn.util;
+package com.muz.cn.serivce;
 
 import com.muz.cn.pojo.po.SysFarmPlayerLevel;
 import com.muz.cn.pojo.po.SysFarmShop;
@@ -6,11 +6,11 @@ import com.muz.cn.repository.SysFarmPlayerLevelRepository;
 import com.muz.cn.repository.SysFarmShopRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
-@Service
+@Configuration
 public class AppInstance {
     private List<SysFarmShop> sysFarmShopList;
     private List<SysFarmPlayerLevel> sysFarmPlayerLevels;
@@ -19,6 +19,7 @@ public class AppInstance {
     private SysFarmShopRepository sysFarmShopRepository;
     @Autowired
     private SysFarmPlayerLevelRepository sysFarmPlayerLevelRepository;
+
 
     @PostConstruct
     public void init() {
@@ -36,12 +37,11 @@ public class AppInstance {
     }
 
     public List<SysFarmPlayerLevel> getSysFarmPlayerLevel() {
-        if(sysFarmPlayerLevels == null){
+        if (sysFarmPlayerLevels == null) {
             return sysFarmPlayerLevelRepository.findAll();
-        }else {
+        } else {
             return sysFarmPlayerLevels;
         }
 
     }
-
 }

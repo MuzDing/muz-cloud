@@ -15,5 +15,7 @@ public class BuyGoodsDto extends BaseDataDto {
     @NotNull
     private Integer goodsId;
     @NotNull
+    private Integer goodsType;
+    @NotNull
     private Integer goodsNum;
 }
