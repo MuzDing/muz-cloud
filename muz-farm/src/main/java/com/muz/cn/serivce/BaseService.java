@@ -4,8 +4,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.muz.cn.config.LoginUserContext;
 import com.muz.cn.pojo.baseEnum.GoodsTypeEnum;
 import com.muz.cn.pojo.baseEnum.LockEnum;
+import com.muz.cn.pojo.baseEnum.WeatherConditionEnum;
 import com.muz.cn.pojo.bo.GoodsInfo;
-import com.muz.cn.pojo.bo.WeatherResponse;
+import com.muz.cn.pojo.bo.Weather.Weather;
+import com.muz.cn.pojo.bo.Weather.WeatherResponse;
 import com.muz.cn.pojo.dto.BuyGoodsDto;
 import com.muz.cn.pojo.dto.PlantGoodsDto;
 import com.muz.cn.pojo.dto.SellGoodsDto;
@@ -16,6 +18,7 @@ import com.muz.cn.pojo.po.SysFarmShop;
 import com.muz.cn.repository.SysFarmPalyerRepository;
 import com.muz.cn.repository.SysFarmPalyerWarehouseRepository;
 import com.muz.cn.util.BaseUtils;
+import com.muz.cn.util.FactorsUtils;
 import com.muz.framework.utils.IdUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,31 +81,40 @@ public class BaseService {
         long userId = loginUser.getUserId();
         // 先获取该玩家的地理信息,进行土地信息的更新
         Object weatherObj = redisTemplate.opsForValue().get(loginUser.getCity() + "Weather");
-//        Object landsObj = redisTemplate.opsForHash().get(String.valueOf(userId), loginUser.getUserId() + "_lands");
         List lands = (List)redisTemplate.opsForHash().get(loginUser.getUserId().toString(), loginUser.getUserId() + "_lands");
         ObjectMapper objectMapper = new ObjectMapper();
-        WeatherResponse weather = objectMapper.convertValue(weatherObj, WeatherResponse.class);
+        WeatherResponse weatherResponse = objectMapper.convertValue(weatherObj, WeatherResponse.class);
         if (lands == null){
             int playerLevel = sysFarmPalyerRepository.findByUserId(userId).getPlayerLevel();
             List<SysFarmPlayerLevel> sysFarmPlayerLevelList = appInstance.getSysFarmPlayerLevel();
             Integer landNumber = sysFarmPlayerLevelList.stream().filter(e -> e.getLevel().equals(playerLevel)).findFirst().get().getLandNumber();
             lands = new ArrayList(landNumber);
             redisTemplate.opsForHash().put(loginUser.getUserId().toString(), loginUser.getUserId() + "_lands", lands);
-        }else if(weather != null){
+        }else if(weatherResponse != null){
             for (int index = 0; index < lands.size(); index++) {
                 if (lands.get(index) != null) {
                     // 1.地块 2.种植id 3.种植时间 4.成长时间 5.是否受天气影响 6.成熟次数
                     List land = (List) lands.get(index);
-                    boolean isEffect = (boolean) land.get(5);
+                    boolean isEffect = (boolean) land.get(4);
                     if (!isEffect){
-                        long growthTime = (long) land.get(4);
-                        long newGrowthTime = (long) (growthTime *0.8);
-                        land.set(4, newGrowthTime);
+                        int growthTime = (int)land.get(3);
+                        Weather[] weather = weatherResponse.getWeather();
+                        // 温度影响因子
+                        double tempFactors = FactorsUtils.tempFactor(FactorsUtils.convertC(weatherResponse.getMain().getTemp()));
+                        WeatherConditionEnum weatherCondition = WeatherConditionEnum.getWeatherConditionEnumById(weather[0].getId());
+                        // 天气影响因子
+                        double maturityFactors = weatherCondition.getMaturityFactors();
+                        double totalFactor = FactorsUtils.totalFactor(tempFactors, maturityFactors);
+                        // 根据因子重新计算成长时间
+                        int newGrowthTime = (int)(growthTime *(1 - totalFactor));
+                        land.set(3, newGrowthTime);
+                        land.set(4, true);
                     }
                     lands.set(index,land);
 
                 }
             }
+            redisTemplate.opsForHash().put(loginUser.getUserId().toString(), loginUser.getUserId() + "_lands", lands);
         }
         return lands;
     }
@@ -139,7 +151,7 @@ public class BaseService {
      * @param dto
      */
 
-    public void plantGoods(PlantGoodsDto dto) {
+    public String plantGoods(PlantGoodsDto dto) {
         Long userId = loginUser.getUserId();
 
         List<SysFarmPlayerLevel> sysFarmPlayerLevelList = appInstance.getSysFarmPlayerLevel();
@@ -149,8 +161,12 @@ public class BaseService {
         Integer playerLevel = sysFarmPalyerRepository.findByUserId(userId).getPlayerLevel();
         Integer landNumber = sysFarmPlayerLevelList.stream().filter(e -> e.getLevel().equals(playerLevel)).findFirst().get().getLandNumber();
         SysFarmShop sysFarmShop = sysFarmShopList.stream().filter(e -> e.getGoodsId().equals(dto.getGoodsId())).findFirst().get();
-        int warehouseNum = sysFarmPlayerWarehouse.getGoodsList().stream().filter(e ->
-                e.getGoodsId().equals(dto.getGoodsId()) && e.getType().equals(dto.getGoodsType())).findFirst().get().getNumber();
+        Optional<GoodsInfo> first = sysFarmPlayerWarehouse.getGoodsList().stream().filter(e ->
+                e.getGoodsId().equals(dto.getGoodsId()) && e.getType().equals(dto.getGoodsType())).findFirst();
+        if (first.isEmpty()){
+            return "请检查仓库有无该作物";
+        }
+        int warehouseNum = first.get().getNumber();
 
         List lands = (List)redisTemplate.opsForHash().get(loginUser.getUserId().toString(), loginUser.getUserId() + "_lands");
         int plantNum = dto.getGoodsNum();
@@ -177,6 +193,7 @@ public class BaseService {
 
         updateWarehouse(dto.getGoodsId(), -(dto.getGoodsNum() - plantNum),dto.getGoodsType(),sysFarmPlayerWarehouse);
         redisTemplate.opsForHash().put(loginUser.getUserId().toString(), loginUser.getUserId() + "_lands", lands);
+        return "种植成功";
     }
 
     public SysFarmPlayer findFarmPlayerInfo() {

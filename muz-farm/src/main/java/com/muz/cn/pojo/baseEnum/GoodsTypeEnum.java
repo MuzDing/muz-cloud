@@ -29,7 +29,7 @@ public enum GoodsTypeEnum {
         return null;
     }
 
-    public static GoodsTypeEnum getCodeEnum(Integer code) {
+    public static GoodsTypeEnum getGoodsTypeEnum(Integer code) {
         for (GoodsTypeEnum ele : GoodsTypeEnum.values()) {
             if (ele.getCode().equals(code)) {
                 return ele;

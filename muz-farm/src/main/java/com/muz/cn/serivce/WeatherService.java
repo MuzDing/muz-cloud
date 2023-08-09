@@ -2,14 +2,13 @@ package com.muz.cn.serivce;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.muz.cn.pojo.bo.WeatherResponse;
+import com.muz.cn.pojo.bo.Weather.WeatherResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -40,15 +39,14 @@ public class WeatherService {
             if (o != null) {
                 return objectMapper.convertValue(o, WeatherResponse.class);
             }else{
-
                 String openWeatherUrl = API_URL + "?q=" + city + "," + country + "&appid=" + API_KEY;
                 ResponseEntity<WeatherResponse> weatherResponse = restTemplate.getForEntity(openWeatherUrl, WeatherResponse.class);
-                redisTemplate.opsForValue().set(city+"Weather", weatherResponse.getBody(),EXPIRATION_TIME_SECONDS,TimeUnit.SECONDS);
+                redisTemplate.opsForValue().set(weatherResponse.getBody().getName()+"Weather", weatherResponse.getBody(),EXPIRATION_TIME_SECONDS,TimeUnit.SECONDS);
                 return  weatherResponse.getBody();
 
             }
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

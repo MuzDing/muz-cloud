@@ -50,7 +50,7 @@ public class LoginUserContext {
     public void setCity(String city) {
         if(context.get() == null){
             LoginUser loginUser = new LoginUser();
-            loginUser.setIp(city);
+            loginUser.setCity(city);
             context.set(loginUser);
         }else{
             LoginUser loginUser = context.get();

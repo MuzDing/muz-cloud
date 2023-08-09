@@ -1,13 +1,14 @@
 package com.muz.cn.config.interceptor;
 
 import com.muz.cn.config.LoginUserContext;
-import com.muz.cn.pojo.bo.WeatherResponse;
+import com.muz.cn.pojo.bo.Weather.WeatherResponse;
 import com.muz.cn.serivce.WeatherService;
 import com.muz.framework.utils.IPUtils;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -32,10 +33,12 @@ public class GloBalInterceptor implements HandlerInterceptor {
 //        }
 
 //        if (request.getAttribute("optCode").equals(FarmOperateEnum.FIND_ALL_LANDS.getCode())){
-            IPUtils.getIpByHttpServletRequest(request);
-            WeatherResponse weather = weatherUtils.getWeatherByIp("58.240.210.114");
-            loginUser.setCity(weather.getName());
-//        }
+        String ip = IPUtils.getIpByHttpServletRequest(request);
+        if(StringUtils.isEmpty(ip)){
+            ip = "58.240.210.114";
+        }
+        WeatherResponse weather = weatherUtils.getWeatherByIp(ip);
+        loginUser.setCity(weather.getName());
         loginUser.setUserId(100000000L);
 
 
