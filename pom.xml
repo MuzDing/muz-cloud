@@ -121,7 +121,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>2.5.4</version>
+                <version>${springboot.version}</version>
                 <configuration>
                     <excludes>
 <!--                        <exclude>-->
@@ -129,7 +129,6 @@
 <!--                            <artifactId>lombok</artifactId>-->
 <!--                        </exclude>-->
                     </excludes>
-                    <addResources>true</addResources>
                 </configuration>
             </plugin>
         </plugins>

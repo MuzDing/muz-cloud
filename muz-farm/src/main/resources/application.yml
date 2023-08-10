@@ -7,3 +7,5 @@ spring:
   profiles:
     active: dev
     include: common
+encryption:
+  key: 123

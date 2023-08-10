@@ -1,11 +1,10 @@
 package com.muz.cn.control;
 
-import com.muz.cn.pojo.dto.BaseDataDto;
 import com.muz.cn.serivce.BaseService;
+import com.muz.cn.util.BouncyCastleUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,9 +16,14 @@ public class BaseController {
     @Autowired
     private BaseService baseService;
 
-    @PostMapping(value = "serivce")
-    public String serivce(@RequestBody BaseDataDto dto) {
-
+    @GetMapping (value = "test")
+    public String serivce() throws Exception {
+        byte[] encrypt = BouncyCastleUtils.encrypt("123".getBytes());
+        System.out.println(new String(encrypt));
+        byte[] encrypt1 = BouncyCastleUtils.decrypt(encrypt);
+        System.out.println(new String(encrypt1));
         return "success";
     }
+
+
 }

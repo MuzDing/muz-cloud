@@ -1,0 +1,58 @@
+server:
+  port: 9001
+
+############################## Spring ##############################
+spring:
+  servlet:
+    multipart: # 文件上传大小
+      enabled: true
+      max-file-size: -1
+      max-request-size: -1
+  # jpa
+  jpa:
+    show-sql: true      # 日志中显示 SQL 语句
+    hibernate:
+      ddl-auto: update  # 自动更新
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+
+  # pgsql
+  datasource:
+    url: jdbc:postgresql://postgres:5432/muz_cloud
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: muzding147
+    maxActive: 20
+    initialSize: 1
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+  data:
+    redis:
+      host: redis
+      port: 6379
+      password: muzding147
+      database: 0
+      lettuce:
+        pool:
+          max-active: 8
+          max-wait: -1ms
+          max-idle: 8
+          min-idle: 0
+      connect-timeout: 60000
+    mongodb:
+      host: mongo
+      port: 27017
+      database: muz_mongo
+      username: root
+      password: muzding147
+
+

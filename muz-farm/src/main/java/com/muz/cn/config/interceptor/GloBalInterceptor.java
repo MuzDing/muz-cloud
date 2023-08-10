@@ -34,7 +34,7 @@ public class GloBalInterceptor implements HandlerInterceptor {
 
 //        if (request.getAttribute("optCode").equals(FarmOperateEnum.FIND_ALL_LANDS.getCode())){
         String ip = IPUtils.getIpByHttpServletRequest(request);
-        if(StringUtils.isEmpty(ip)){
+        if(StringUtils.isEmpty(ip) || ip.equals("127.0.0.1") || ip.equals("0:0:0:0:0:0:0:1")){
             ip = "58.240.210.114";
         }
         WeatherResponse weather = weatherUtils.getWeatherByIp(ip);
