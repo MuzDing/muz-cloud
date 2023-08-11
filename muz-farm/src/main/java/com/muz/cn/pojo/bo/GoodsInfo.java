@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class GoodsInfo {
     private Integer goodsId;
-    private Integer type;
-    private Integer number;
+    private Integer goodsType;
+    private Integer goodsNumber;
     // 1 锁定 0未锁定
     private Integer lock;
 }

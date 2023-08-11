@@ -29,7 +29,7 @@ public class FarmController {
                 //购买商品
                 baseService.buyFarmGoods(BaseUtils.convertToClass(dto.getData(), BuyGoodsDto.class));
                 break;
-            case FIND_ALL_LANDS:
+            case FIND_FARM_ALL_LANDS:
                 //查询所有土地
                 return baseService.findAllLands(request);
             case SELL_GOODS:
@@ -43,13 +43,19 @@ public class FarmController {
             case FIND_FARM_PALYER_INFO:
                 //获取农场玩家信息
                 return baseService.findFarmPlayerInfo();
-            case FIND_WAREHOUSE:
+            case FIND_FARM_WAREHOUSE:
                 //获取玩家仓库信息
                 return baseService.findWarehouse();
             case HARVEST_GOODS:
                 //收获作物
                 baseService.harvestGoods();
                 break;
+            case FIND_FARM_SHOP:
+                // 查询商店内容
+                return baseService.findFarmShop();
+            case FIND_FARM_PLAYER_LEVEL:
+                // 查询农场玩家等级表
+                return baseService.findFarmPlayerLevel();
 
         }
         return "success";

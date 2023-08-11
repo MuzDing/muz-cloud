@@ -8,9 +8,11 @@ public enum FarmOperateEnum {
      * 最后四位为累加shu
      */
     // 查询当前土地信息
-    FIND_ALL_LANDS(14000001, "查询所有土地"),
-    FIND_WAREHOUSE(14000002, "获取仓库信息"),
+    FIND_FARM_ALL_LANDS(14000001, "获取所有土地"),
+    FIND_FARM_WAREHOUSE(14000002, "获取仓库信息"),
     FIND_FARM_PALYER_INFO(14000003, "获取农场玩家信息"),
+    FIND_FARM_SHOP(14000004, "获取商店信息"),
+    FIND_FARM_PLAYER_LEVEL(14000005, "获取农场的玩家等级表"),
     BUY_GOODS(11000001, "购买商品"),
     PLANT_GOODS(13000001, "种植作物"),
     SELL_GOODS(13000002, "出售商品"),

@@ -134,12 +134,12 @@ public class BaseService {
                 continue;
             }
             SysFarmShop oneGoodsInfo = sysFarmShop.stream().filter(e -> e.getGoodsId().equals(goodsInfo.getGoodsId())).findFirst().get();
-            money += oneGoodsInfo.getMaturityPrice() * goodsInfo.getNumber();
+            money += oneGoodsInfo.getMaturityPrice() * goodsInfo.getGoodsNumber();
         }
         List<GoodsInfo> goodsList = dto.getGoodsList();
         goodsList.stream()
                 .filter(e -> e.getLock() == 0)
-                .forEach(e -> e.setNumber(-e.getNumber()));
+                .forEach(e -> e.setGoodsNumber(-e.getGoodsNumber()));
 
         updateWarehouse(goodsList,farmPlayerWarehouse);
         player.setMoney(player.getMoney() + money);
@@ -162,11 +162,13 @@ public class BaseService {
         Integer landNumber = sysFarmPlayerLevelList.stream().filter(e -> e.getLevel().equals(playerLevel)).findFirst().get().getLandNumber();
         SysFarmShop sysFarmShop = sysFarmShopList.stream().filter(e -> e.getGoodsId().equals(dto.getGoodsId())).findFirst().get();
         Optional<GoodsInfo> first = sysFarmPlayerWarehouse.getGoodsList().stream().filter(e ->
-                e.getGoodsId().equals(dto.getGoodsId()) && e.getType().equals(dto.getGoodsType())).findFirst();
+                        e.getGoodsId().equals(dto.getGoodsId())
+                        && e.getGoodsType().equals(dto.getGoodsType())
+                        && e.getGoodsType().equals(GoodsTypeEnum.PLANT_SEEDS.getCode())).findFirst();
         if (first.isEmpty()){
             return "请检查仓库有无该作物";
         }
-        int warehouseNum = first.get().getNumber();
+        int warehouseNum = first.get().getGoodsNumber();
 
         List lands = (List)redisTemplate.opsForHash().get(loginUser.getUserId().toString(), loginUser.getUserId() + "_lands");
         int plantNum = dto.getGoodsNum();
@@ -205,6 +207,14 @@ public class BaseService {
         SysFarmPlayerWarehouse farmPlayerWarehouse = SysFarmPalyerWarehouseRepository.findByUserId(loginUser.getUserId());
         return farmPlayerWarehouse;
     }
+    public List<SysFarmShop> findFarmShop() {
+        return appInstance.getSysFarmShop();
+    }
+
+    public List<SysFarmPlayerLevel> findFarmPlayerLevel() {
+        return appInstance.getSysFarmPlayerLevel();
+    }
+
 
     /**
      * 对仓库在的商品进行一次新的计算
@@ -214,17 +224,17 @@ public class BaseService {
         List<GoodsInfo> goodsList = farmPlayerWarehouse.getGoodsList();
         Optional<GoodsInfo> foundGoods = goodsList.stream()
                 .filter(goodsInfo ->
-                        goodsInfo.getGoodsId().equals(goodsId) && goodsInfo.getType().equals(type))
+                        goodsInfo.getGoodsId().equals(goodsId) && goodsInfo.getGoodsType().equals(type))
                 .findFirst();
 
         if (foundGoods.isPresent()) {
             GoodsInfo goodsInfo = foundGoods.get();
-            goodsInfo.setNumber(goodsInfo.getNumber() + number);
+            goodsInfo.setGoodsNumber(goodsInfo.getGoodsNumber() + number);
         } else {
             goodsList.add(GoodsInfo.builder()
                     .goodsId(goodsId)
-                    .number(number)
-                    .type(foundGoods.get().getType())
+                    .goodsNumber(number)
+                    .goodsType(foundGoods.get().getGoodsType())
                     .lock(LockEnum.NOT_LOCK.getCode())
                     .build());
         }
@@ -236,10 +246,10 @@ public class BaseService {
         List<GoodsInfo> goodsList = farmPlayerWarehouse.getGoodsList();
         for(GoodsInfo goodsInfo:partGoodsInfoList){
             goodsList.stream()
-                    .filter(e-> e.getGoodsId().equals(goodsInfo.getGoodsId()) && e.getType().equals(goodsInfo.getType()))
+                    .filter(e-> e.getGoodsId().equals(goodsInfo.getGoodsId()) && e.getGoodsType().equals(goodsInfo.getGoodsType()))
                     .findFirst()
                     .ifPresentOrElse(
-                            existGoodsInfo -> existGoodsInfo.setNumber(existGoodsInfo.getNumber() + goodsInfo.getNumber()),
+                            existGoodsInfo -> existGoodsInfo.setGoodsNumber(existGoodsInfo.getGoodsNumber() + goodsInfo.getGoodsNumber()),
                             () -> goodsList.add(goodsInfo)
                     );
         }
@@ -283,11 +293,11 @@ public class BaseService {
                     goodsList.stream()
                             .filter(e -> e.getGoodsId().equals(goods.getGoodsId()))
                             .findFirst()
-                            .ifPresentOrElse(e -> e.setNumber(e.getNumber() + goods.getMaturityNumber()),
+                            .ifPresentOrElse(e -> e.setGoodsNumber(e.getGoodsNumber() + goods.getMaturityNumber()),
                                     () -> { goodsList.add(GoodsInfo.builder()
                                             .goodsId(goodsId)
-                                            .type(GoodsTypeEnum.PLANT_FRUIT.getCode())
-                                            .number(goods.getMaturityNumber())
+                                            .goodsType(GoodsTypeEnum.PLANT_FRUIT.getCode())
+                                            .goodsNumber(goods.getMaturityNumber())
                                             .lock(LockEnum.NOT_LOCK.getCode())
                                             .build());
                                     });
